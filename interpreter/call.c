@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <dlfcn.h>
+#include "call.h"
 
 int call(int argc, char *argv[]) {
   char *cmd = argv[0];
 #ifdef EXECUTABLE
   char path[80];
-  strcpy(path, "../cmd/lib/");
+  strcpy(path, "../cmd/bin/");
   strcat(path, cmd);
-	strcat(path, ".exe");
-  execv(path, argv);
+  execv(path, argv + 1);
 #elif INTEGRATED_FUNCTION
 
 #elif LIBRARY
@@ -21,7 +23,7 @@ int call(int argc, char *argv[]) {
   if (handle) {
        int (*fct)(int,char**);
        fct = dlsym(handle, cmd);
-       fct(argc, argv);
+       fct(argc - 1, argv + 1);
   }
 #endif
 }
