@@ -1,5 +1,8 @@
-char tabWithoutFirstIndex(char *(tab[]),int length){
-	char *tabWFI = malloc(length);
-	tabWFI[i] = tab[1];
+char *tabWithoutFirstIndex(int length, char *tab[]){
+	length--;
+	char *tabWFI = malloc(sizeof(char) * length);
+	for (int i = 0; i < length; i++) {
+		tabWFI[i] = tab[i + 1];
+	}
 	return tabWFI;
 }
