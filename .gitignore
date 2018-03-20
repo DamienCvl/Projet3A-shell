@@ -1,0 +1,4 @@
+# Ignore les executables
+./cmd/bin/*.exe
+*.exe
+
