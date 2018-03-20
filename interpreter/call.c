@@ -10,9 +10,13 @@ int call(int argc, char *argv[]) {
   char path[80];
   strcpy(path, "cmd/bin/");
   strcat(path, cmd);
+  strcat(path, ".exe");
   execv(path, argv);
 #elif INTEGRATED_FUNCTION
-
+  #include "functions.h"
+  function functionCmd = getFunction(cmd);
+  if (functionCmd)
+    (*functionCmd)(argc - 1, argv + 1);
 #elif LIBRARY
   char path[80];
   strcpy(path, "cmd/lib/lib");
@@ -21,7 +25,7 @@ int call(int argc, char *argv[]) {
   void *handle = dlopen(path, RTLD_NOW);
 
   if (handle) {
-       int (*fct)(int,char**);
+       int (*cmd)(int,char**);
        fct = dlsym(handle, cmd);
        fct(argc - 1, argv + 1);
   }
