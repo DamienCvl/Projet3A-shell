@@ -1,7 +1,7 @@
 CC=gcc
 COMMANDS= echo pwd
-PATH_LIB=cmd/lib/
 PATH_BIN=cmd/bin/
+PATH_LIB=cmd/lib/
 PATH_COMMAND_SRC=cmd/src/
 PATH_COMMAND=cmd/
 PATH_INTERPRETER=interpreter/
@@ -9,11 +9,17 @@ PATH_INTERPRETER=interpreter/
 all: as_executable as_integrated_function as_library
 
 command_executables:
+	@if [ ! -d "$(PATH_BIN)" ]; then\
+  	mkdir "$(PATH_BIN)";\
+	fi
 	@for cmd in $(COMMANDS); do\
 		$(CC) -o $(PATH_BIN)$$cmd $(PATH_COMMAND_SRC)$$cmd.c -D CREATE_MAIN;\
 	done
 
 command_libraries:
+	@if [ ! -d "$(PATH_LIB)" ]; then\
+  	mkdir "$(PATH_LIB)";\
+	fi
 	@for cmd in $(COMMANDS); do\
 		$(CC) -shared -o $(PATH_LIB)lib$$cmd.so -fPIC $(PATH_COMMAND_SRC)$$cmd.c -D CREATE_MAIN;\
 	done
