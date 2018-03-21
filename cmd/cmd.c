@@ -1,11 +1,13 @@
+#ifdef INTEGRATED_FUNCTION
+
 #include <string.h>
-#include "functions.h"
+#include "cmd.h"
 
 int NB_CMD = 2;
-function CMD_FUNCTIONS[] = {echo, pwd};
+cmd_t CMD_FUNCTIONS[] = {echo, pwd};
 char *CMD_NAMES[] = {"echo", "pwd"};
 
-function getFunction(char *name) {
+cmd_t getCmd(char *name) {
   for (int i = 0; i < NB_CMD; i++) {
     if (strcmp(name, CMD_NAMES[i]) == 0) {
       return CMD_FUNCTIONS[i];
@@ -13,3 +15,5 @@ function getFunction(char *name) {
   }
   return NULL;
 }
+
+#endif

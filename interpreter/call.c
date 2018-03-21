@@ -3,30 +3,29 @@
 #include <unistd.h>
 #include <dlfcn.h>
 #include "call.h"
+#include "../cmd/cmd.h"
 
 int call(int argc, char *argv[]) {
-  char *cmd = argv[0];
+  char *cmd_name = argv[0];
 #ifdef EXECUTABLE
   char path[80];
   strcpy(path, "cmd/bin/");
-  strcat(path, cmd);
+  strcat(path, cmd_name);
   execv(path, argv);
 #elif INTEGRATED_FUNCTION
-  #include "functions.h"
-  function functionCmd = getFunction(cmd);
-  if (functionCmd)
-    (*functionCmd)(argc - 1, argv + 1);
+  cmd_t cmd = getCmd(cmd_name);
+  if (cmd)
+    cmd(argc - 1, argv + 1);
 #elif LIBRARY
   char path[80];
   strcpy(path, "cmd/lib/lib");
-  strcat(path, cmd);
+  strcat(path, cmd_name);
   strcat(path, ".so");
   void *handle = dlopen(path, RTLD_NOW);
 
   if (handle) {
-       int (*fct)(int,char**);
-       fct = dlsym(handle, cmd);
-       fct(argc - 1, argv + 1);
+       cmd_t cmd = dlsym(handle, cmd_name);
+       cmd(argc - 1, argv + 1);
   }
 #endif
 }

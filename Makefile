@@ -1,23 +1,31 @@
-# On vera plus tard pour faire un makefile propre
+CC=gcc
+COMMANDS= echo pwd
+PATH_LIB=cmd/lib/
+PATH_BIN=cmd/bin/
+PATH_COMMAND_SRC=cmd/src/
+PATH_COMMAND=cmd/
+PATH_INTERPRETER=interpreter/
 
-all: generate_command_executables generate_command_libraries generate_as_executable generate_as_integrated_function
+all: as_executable as_integrated_function as_library
 
-generate_command_executables:
-	gcc -o cmd/bin/echo cmd/src/echo.c -D CREATE_MAIN
-	gcc -o cmd/bin/pwd cmd/src/pwd.c -D CREATE_MAIN
+command_executables:
+	@for cmd in $(COMMANDS); do\
+		$(CC) -o $(PATH_BIN)$$cmd $(PATH_COMMAND_SRC)$$cmd.c -D CREATE_MAIN;\
+	done
 
-generate_command_libraries:
-	gcc -shared -o cmd/lib/libecho.so -fPIC cmd/src/echo.c -D CREATE_MAIN
-	gcc -shared -o cmd/lib/libpwd.so -fPIC cmd/src/pwd.c -D CREATE_MAIN
+command_libraries:
+	@for cmd in $(COMMANDS); do\
+		$(CC) -shared -o $(PATH_LIB)lib$$cmd.so -fPIC $(PATH_COMMAND_SRC)$$cmd.c -D CREATE_MAIN;\
+	done
 
-generate_as_executable:
-	gcc -o asExecutable interpreter/test.c interpreter/call.c -D EXECUTABLE
+as_executable: command_executables
+	@$(CC) -o asExecutable $(PATH_INTERPRETER)*.c -D EXECUTABLE
 
-generate_as_integrated_function:
-	gcc -o asIntegratedFunction interpreter/test.c interpreter/call.c interpreter/functions.c cmd/src/echo.c  cmd/src/pwd.c -D INTEGRATED_FUNCTION
+as_integrated_function:
+	@$(CC) -o asIntegratedFunction $(PATH_INTERPRETER)*.c $(PATH_COMMAND)*.c $(PATH_COMMAND_SRC)*.c -D INTEGRATED_FUNCTION
 
-generate_as_library:
-	gcc -o asLibrary interpreter/test.c interpreter/call.c -D LIBRARY -ldl
+as_library: command_libraries
+	@$(CC) -o asLibrary $(PATH_INTERPRETER)*.c -D LIBRARY -ldl
 
 clean:
 	@/bin/rm -f *.o
