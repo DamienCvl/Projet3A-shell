@@ -16,6 +16,7 @@ int call(int argc, char *argv[]) {
   cmd_t cmd = getCmd(cmd_name);
   if (cmd)
     cmd(argc - 1, argv + 1);
+//TODO else si commande introuvable
 #elif LIBRARY
   char path[80];
   strcpy(path, "cmd/lib/lib");
