@@ -19,7 +19,7 @@ int cd(int argc, char *argv[]) {
   }
 
   if (chdir(path) != 0) {
-    printf("No such file or directory\n");
+    printf("cd: %s:No such file or directory\n", path);
   }
   return 0;
 }
