@@ -9,7 +9,7 @@
 #include "include/cd.h"
 #include "include/rm.h"
 
-int NB_CMD = 2;
+int NB_CMD = 5;
 cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm};
 char *CMD_NAMES[] = {"echo", "pwd", "cat", "cd", "rm"};
 
