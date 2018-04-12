@@ -3,9 +3,15 @@
 #include <string.h>
 #include "cmd.h"
 
-int NB_CMD = 3;
-cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat};
-char *CMD_NAMES[] = {"echo", "pwd", "cat"};
+#include "include/echo.h"
+#include "include/pwd.h"
+#include "include/cat.h"
+#include "include/cd.h"
+#include "include/rm.h"
+
+int NB_CMD = 2;
+cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm};
+char *CMD_NAMES[] = {"echo", "pwd", "cat", "cd", "rm"};
 
 cmd_t getCmd(char *name) {
   for (int i = 0; i < NB_CMD; i++) {
