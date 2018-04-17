@@ -4,7 +4,7 @@
 #include "../include/cd.h"
 
 #ifdef CREATE_MAIN
-#include "../include/macro_main.h"
+#include "../utils/macro_main.h"
 MAIN(cd)
 #endif
 

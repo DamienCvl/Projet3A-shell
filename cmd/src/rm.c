@@ -2,7 +2,7 @@
 #include "../include/rm.h"
 
 #ifdef CREATE_MAIN
-#include "../include/macro_main.h"
+#include "../utils/macro_main.h"
 MAIN(rm)
 #endif
 

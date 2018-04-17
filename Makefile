@@ -3,6 +3,7 @@ COMMANDS= echo pwd cd rm
 PATH_BIN=cmd/bin/
 PATH_LIB=cmd/lib/
 PATH_COMMAND_SRC=cmd/src/
+PATH_COMMAND_UTILS=cmd/utils/
 PATH_COMMAND=cmd/
 PATH_INTERPRETER=interpreter/
 
@@ -25,13 +26,13 @@ command_libraries:
 	done
 
 as_executable: command_executables
-	@$(CC) -o asExecutable $(PATH_INTERPRETER)*.c -D EXECUTABLE
+	@$(CC) -o asExecutable $(PATH_INTERPRETER)*.c $(PATH_COMMAND_UTILS)*.c -D EXECUTABLE
 
 as_integrated_function:
-	@$(CC) -o asIntegratedFunction $(PATH_INTERPRETER)*.c $(PATH_COMMAND)*.c $(PATH_COMMAND_SRC)*.c -D INTEGRATED_FUNCTION
+	@$(CC) -o asIntegratedFunction $(PATH_INTERPRETER)*.c $(PATH_COMMAND)*.c $(PATH_COMMAND_SRC)*.c $(PATH_COMMAND_UTILS)*.c -D INTEGRATED_FUNCTION
 
 as_library: command_libraries
-	@$(CC) -o asLibrary $(PATH_INTERPRETER)*.c -D LIBRARY -ldl
+	@$(CC) -o asLibrary $(PATH_INTERPRETER)*.c $(PATH_COMMAND_UTILS)*.c -D LIBRARY -ldl
 
 clean:
 	@/bin/rm -f *.o
