@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include "../include/rm.h"
-
-#ifdef CREATE_MAIN
 #include "../utils/macro_main.h"
+
 MAIN(rm)
-#endif
 
 int rm(int argc, char *argv[]) {
   char *filename;

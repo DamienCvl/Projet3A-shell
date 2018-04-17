@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include "../include/cat.h"
 #include "../utils/argument.h"
-
-#ifdef CREATE_MAIN
 #include "../utils/macro_main.h"
+
 MAIN(cat)
-#endif
 
 int cat(int argc, char *argv[]) {
 // FONCTION QUI N'A RIEN A VOIR AVEC CAT, UTILISER POUR TESTER ARGUMENT.C
