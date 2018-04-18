@@ -8,10 +8,11 @@
 #include "include/cat.h"
 #include "include/cd.h"
 #include "include/rm.h"
+#include "include/ls.h"
 
-int NB_CMD = 5;
-cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm};
-char *CMD_NAMES[] = {"echo", "pwd", "cat", "cd", "rm"};
+int NB_CMD = 6;
+cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm, ls};
+char *CMD_NAMES[] = {"echo", "pwd", "cat", "cd", "rm", "ls"};
 
 cmd_t getCmd(char *name) {
   for (int i = 0; i < NB_CMD; i++) {
