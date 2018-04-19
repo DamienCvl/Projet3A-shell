@@ -6,35 +6,21 @@
 MAIN(cat)
 
 int cat(int argc, char *argv[]) {
-// FONCTION QUI N'A RIEN A VOIR AVEC CAT, UTILISER POUR TESTER ARGUMENT.C
-  Argument* arguments = readArguments(argc, argv);
-  char* str;
-
-  for (int i = 0; i < argc; i++){
-    switch (arguments[i].type) {
-      case INVALID: {
-        str = "INVALID";
-        break;
-      }
-      case UNIQ: {
-        str = "UNIQ";
-        break;
-      }
-      case MULTI: {
-        str = "MULTI";
-        break;
-      }
-      case PATH: {
-        str = "PATH";
-        break;
-      }
-    }
-    printf("---------------------------\n");
-    printf("Argument : %d\n", i+1);
-    printf("type : %s\n", str);
-    printf("data : %s\n", arguments[i].data);
-    printf("dataSize : %d\n", arguments[i].dataSize);
+  FILE *f0;
+  char *targetPath = argv[0];
+  char line[1000] = "";
+  char *notEndFile;
+  
+  f0 = fopen(targetPath,"r");
+  if (f0) {
+    do {
+      printf("%s", line);
+      notEndFile = fgets(line, 1000, f0);
+    } while(notEndFile);
   }
-
-  return 0;
+  else {
+    printf("cat: %s: No such file or directory",targetPath);
+  }
+  fclose(f0);
+  return(0);
 }
