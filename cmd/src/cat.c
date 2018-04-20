@@ -6,21 +6,22 @@
 MAIN(cat)
 
 int cat(int argc, char *argv[]) {
-  FILE *f0;
-  char *targetPath = argv[0];
-  char line[1000] = "";
-  char *notEndFile;
-  
-  f0 = fopen(targetPath,"r");
-  if (f0) {
-    do {
-      printf("%s", line);
-      notEndFile = fgets(line, 1000, f0);
-    } while(notEndFile);
+  FILE *file;
+  char *filename = argv[0];
+  char c;
+
+  file = fopen(filename,"r");
+
+  if (!file) {
+      printf("cat: %s: No such file or directory\n", filename);
+      return(-1);
   }
-  else {
-    printf("cat: %s: No such file or directory",targetPath);
+
+  while (!feof(file)) {
+    c = fgetc(file);
+    printf("%c", c);
   }
-  fclose(f0);
+
+  fclose(file);
   return(0);
 }
