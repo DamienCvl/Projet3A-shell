@@ -8,52 +8,42 @@
 
 #define BUFFER_SIZE 1024
 
- int my_pipe(char *entree, char *sortie, int (*fct)(char *)){
+int myPipe(char *entree, char *sortie, int (*fctEntree)(char *), int (*fctSortie)(char *)){
    int fd[2];
    pid_t pid_fils;
    pipe(fd);
 
    if ((pid_fils = fork()) == -1) {
      perror("fork");
-     exit(1);
+     return -1;
    }
 
    if (pid_fils == 0) {
      close(fd[0]);
-     interpreteur(entree);
+     (*fctEntree)(entree);
    } else {
      close(fd[1]);
-     redirectionNormal(sortie);
-     exit(0);
+     (*fctSortie)(sortie);
+     wait(NULL);
    }
-   wait(NULL);
    return 0;
 }
 
-int redirectionNormal(char *sortie){
+int redirigerVersInterpreteur(char *sortie) {
   int currentChar ;
   char *buffer[BUFFER_SIZE];
   strcpy(buffer, sortie);
-  strcpy(buffer, ' \"');
+  strcpy(buffer, " \"");
   while (!feof(stdin)) {
     currentChar = fgetc(stdin);
     strcpy(buffer, currentChar);
   }
-  strcpy(buffer, '\"');
+  strcpy(buffer, "\"");
   interpreteur(buffer);
   return 0;
 }
 
-int redirectionFichierAjout(char *filename) {
-  redirectionFichier(filename, "a");
-}
-
-int redirectionFichierEcraser(char *filename) {
-  remove(filename);
-  redirectionFichier(filename, "w");
-}
-
-int redirectionFichier(char *filename, char *mode) {
+int redirigerVersFichier(char *filename, char *mode) {
   FILE *fichier = NULL;
   fichier = fopen(filename, mode);
   int currentChar ;
@@ -61,14 +51,45 @@ int redirectionFichier(char *filename, char *mode) {
     currentChar = fgetc(stdin);
     fputc(currentChar, fichier);
   }
+  return 0;
 }
 
-  int redirectionEntre();
-    /*  <  */
-    //Prend le fichier dans l'entrée
-    // cat < monFichier.txt
+int redirigerVersFichierEnAjout(char *filename) {
+  redirigerVersFichier(filename, "a");
+  return 0;
+}
 
- int redirectionEntreClavier();
-    /*  <<  */
-    //Prend le entrée standard jusqu'a l'entrée donné
-    // sort << FIN
+int redirigerVersFichierEnEcrasant(char *filename) {
+  remove(filename);
+  redirigerVersFichier(filename, "w");
+  return 0;
+}
+
+int lireDepuisFichier(char *filename) {
+  return 0;
+}
+
+int lireDepuisClavier(char *inutile) {
+  return 0;
+}
+
+// Interfaces de redirection
+int redirectionCommandeVersCommande(char *entree, char *sortie) {
+  return myPipe(entree, sortie, interpreteur, redirigerVersInterpreteur);
+}
+
+int redirectionCommandeVersFichierEnAjout(char *entree, char *sortie) {
+  return myPipe(entree, sortie, interpreteur, redirigerVersFichierEnAjout);
+}
+
+int redirectionCommandeVersFichierEnEcrasant(char *entree, char *sortie) {
+  return myPipe(entree, sortie, interpreteur, redirigerVersFichierEnEcrasant);
+}
+
+int redirectionFichierVersCommande(char *entree, char *sortie) {
+  return myPipe(entree, sortie, lireDepuisFichier, interpreteur);
+}
+
+int redirectionClavierVersCommande(char *entree, char *sortie) {
+  return myPipe(entree, sortie, lireDepuisClavier, interpreteur);
+}
