@@ -46,11 +46,12 @@ int redirigerVersInterpreteur(char *sortie) {
 int redirigerVersFichier(char *filename, char *mode) {
   FILE *fichier = NULL;
   fichier = fopen(filename, mode);
-  int currentChar ;
-  while (currentChar != '\n') {
+  int currentChar;
+  while (!feof(stdin)) {
     currentChar = fgetc(stdin);
     fputc(currentChar, fichier);
   }
+  close(fichier);
   return 0;
 }
 
@@ -66,10 +67,24 @@ int redirigerVersFichierEnEcrasant(char *filename) {
 }
 
 int lireDepuisFichier(char *filename) {
+  FILE *fichier = NULL;
+  fichier = fopen(filename, "r");
+  int currentChar;
+  while (!feof(fichier)) {
+    currentChar = fgetc(stdin);
+    printf("%c", currentChar);
+  }
+  close(fichier);
   return 0;
 }
 
-int lireDepuisClavier(char *inutile) {
+int lireDepuisClavier(char *fin) {
+  char *chaine == NULL;
+  do {
+    if (chaine != NULL)
+      printf("%s", chaine);
+    scanf("%s", chaine);
+  } while (strcmp(chaine, fin) != 0);
   return 0;
 }
 
