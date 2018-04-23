@@ -6,7 +6,7 @@
 
 char *readCmd();
 char **concCmd(char *cmd);
-
+void directory();
 
 int main(int argc, char **argv)
 {
@@ -15,7 +15,8 @@ int main(int argc, char **argv)
     int isLooping ; //savoir quand quitter
 
     do {
-        printf("> ");
+        directory();
+        printf("\n> ");
         cmd = readCmd();
         args = concCmd(cmd);
         isLooping = call(args);
@@ -27,7 +28,12 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
-
+void directory()
+{
+    char dir[1024];
+    getcwd(dir, sizeof(dir));
+    printf("\n> %s", dir);
+}
 
 char *readCmd()
 {
