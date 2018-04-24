@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../include/pwd.h"
+#include "../utils/macro_main.h"
 
-#ifdef CREATE_MAIN
-#include "../include/macro_main.h"
 MAIN(pwd)
-#endif
 
 int pwd(int argc, char *argv[]) {
   char cwd[1024];

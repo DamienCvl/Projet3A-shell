@@ -2,11 +2,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "../include/cd.h"
+#include "../utils/macro_main.h"
 
-#ifdef CREATE_MAIN
-#include "../include/macro_main.h"
 MAIN(cd)
-#endif
 
 int cd(int argc, char *argv[]) {
   char *path;
