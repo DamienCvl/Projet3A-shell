@@ -16,9 +16,17 @@ int main(int argc, char **argv) {
     char **args;
     char **parsedInput;
     do {
+        printf("directory\n");
         directory();
+        printf("readInput\n");
         char *input = readInput();
+        printf("parseINput\n");
         int nombreArgument = parseInput(parsedInput, input);
+        printf("%d\n", nombreArgument);
+        printf("\n%s\n", parsedInput[0]);
+        printf("%s\n", parsedInput[1] );
+
+        printf("interpret\n");
         interpret(nombreArgument, parsedInput);
     } while (1);
     return 0;
@@ -41,10 +49,8 @@ int interpret(int argc, char *argv[]){
     else if (strcmp("<<", argv[i]) == 0) {
       return redirectionClavierVersCommande(i - 1, &argv[0], i + 1, &argv[i + 1]);
     }
-    else {
-      return call(argc, argv);
-    }
   }
+  return call(argc, argv);
 }
 
 void directory() {
@@ -61,20 +67,24 @@ char *readInput() {
 }
 
 int parseInput(char *parsed[], char *input) {
-  int currentIndex = 0, nombreArgument = 0;
-  char currentChar = input[currentIndex];
+  int indexCurrentCommande = 0, nombreArgument = 0, indexDansInput = 0;
+  char currentChar = input[indexDansInput];
 
   parsed = malloc(MAX_ARGS);
   parsed[0] = malloc(sizeof(char) * MAX_SIZE_ARG);
 
   while (currentChar != '\n' || nombreArgument > MAX_ARGS) {
     if (currentChar == ' ') {
-      parsed[nombreArgument][currentIndex + 1] = '\0';
+      parsed[nombreArgument][indexCurrentCommande] = '\0';
       nombreArgument++;
-      currentIndex = 0;
+      parsed[nombreArgument] = malloc(sizeof(char) * MAX_SIZE_ARG);
+      indexCurrentCommande = 0;
     } else {
-      parsed[nombreArgument][currentIndex] = currentChar;
+      parsed[nombreArgument][indexCurrentCommande] = currentChar;
+      indexCurrentCommande++;
     }
+    indexDansInput++;
+    currentChar = input[indexDansInput];
   }
-  return nombreArgument;
+  return nombreArgument + 1;
 }
