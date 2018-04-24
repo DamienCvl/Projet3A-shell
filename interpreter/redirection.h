@@ -1,4 +1,4 @@
-#ifdef _REDIRECTION_H_
+#ifndef _REDIRECTION_H_
 #define _REDIRECTION_H_
 
   int redirectionCommandeVersCommande(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]);

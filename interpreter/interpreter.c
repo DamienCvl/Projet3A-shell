@@ -2,49 +2,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include "interpreter.h"
 #include "call.h"
+#include "redirection.h"
 
-#define TAILLE_MAX_ARGUMENT 100
-#define NBR_MAX_DE_COMMANDE 25
+#define MAX_SIZE_ARG 100
+#define MAX_ARGS 25
 #define BUFFER_SIZE 1024
-
-char *readInput();
-void directory();
-int parseInput(char *parsed[], char *input);
-int interpret(int argc, char *argv[]);
 
 int main(int argc, char **argv) {
     char *cmd;
     char **args;
-    char parsedInput[NBR_MAX_DE_COMMANDE][TAILLE_MAX_ARGUMENT];
+    char **parsedInput;
     do {
         directory();
         char *input = readInput();
         int nombreArgument = parseInput(parsedInput, input);
         interpret(nombreArgument, parsedInput);
     } while (1);
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 int interpret(int argc, char *argv[]){
   for (int i = argc-1; i > 0; i--) {
     if (strcmp("|", argv[i]) == 0) {
-      //redirectionCommandeVersCommande(i - 1, &argv[0], i + 1, &argv[i + 1]);
+      return redirectionCommandeVersCommande(i - 1, &argv[0], i + 1, &argv[i + 1]);
     }
     else if (strcmp(">", argv[i]) == 0) {
-      //redirectionCommandeVersFichierEnEcrasant(i - 1, &argv[0], i + 1, &argv[i + 1]);
+      return redirectionCommandeVersFichierEnEcrasant(i - 1, &argv[0], i + 1, &argv[i + 1]);
     }
     else if (strcmp(">>", argv[i]) == 0) {
-      //redirectionCommandeVersFichierEnAjout(i - 1, &argv[0], i + 1, &argv[i + 1]);
+      return redirectionCommandeVersFichierEnAjout(i - 1, &argv[0], i + 1, &argv[i + 1]);
     }
     else if (strcmp("<", argv[i]) == 0) {
-      //redirectionFichierVersCommande(i - 1, &argv[0], i + 1, &argv[i + 1]);
+      return redirectionFichierVersCommande(i - 1, &argv[0], i + 1, &argv[i + 1]);
     }
     else if (strcmp("<<", argv[i]) == 0) {
-      //redirectionClavierVersCommande(i - 1, &argv[0], i + 1, &argv[i + 1]);
+      return redirectionClavierVersCommande(i - 1, &argv[0], i + 1, &argv[i + 1]);
     }
     else {
-      call(argc, argv);
+      return call(argc, argv);
     }
   }
 }
@@ -52,13 +50,13 @@ int interpret(int argc, char *argv[]){
 void directory() {
     char dir[1024];
     getcwd(dir, sizeof(dir));
-    printf("\n%s $", dir);
+    printf("%s$ ", dir);
 }
 
 char *readInput() {
     char *line = NULL;
-    unsigned int bufsize = BUFFER_SIZE;
-    getline(&line, &bufsize, stdin);
+    size_t len = 0;
+    getline(&line, &len, stdin);
     return line;
 }
 
@@ -66,7 +64,10 @@ int parseInput(char *parsed[], char *input) {
   int currentIndex = 0, nombreArgument = 0;
   char currentChar = input[currentIndex];
 
-  while (currentChar != '\n' || nombreArgument > NBR_MAX_DE_COMMANDE) {
+  parsed = malloc(MAX_ARGS);
+  parsed[0] = malloc(sizeof(char) * MAX_SIZE_ARG);
+
+  while (currentChar != '\n' || nombreArgument > MAX_ARGS) {
     if (currentChar == ' ') {
       parsed[nombreArgument][currentIndex + 1] = '\0';
       nombreArgument++;
