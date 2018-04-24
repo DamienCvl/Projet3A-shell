@@ -8,7 +8,7 @@
 
 #define BUFFER_SIZE 1024
 
-int myPipe(char *entree, char *sortie, int (*fctEntree)(char *), int (*fctSortie)(char *)){
+int myPipe(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[], int (*fctEntree)(char *), int (*fctSortie)(char *)){
    int fd[2];
    pid_t pid_fils;
    pipe(fd);
@@ -20,16 +20,16 @@ int myPipe(char *entree, char *sortie, int (*fctEntree)(char *), int (*fctSortie
 
    if (pid_fils == 0) {
      close(fd[0]);
-     (*fctEntree)(entree);
+     (*fctEntree)(argcEntree, argvEntree);
    } else {
      close(fd[1]);
-     (*fctSortie)(sortie);
+     (*fctSortie)(argcSortie, argvSortie);
      wait(NULL);
    }
    return 0;
 }
 
-int redirigerVersInterpreteur(char *sortie) {
+int redirigerVersInterpreteur(int argcSortie, char *argvSortie[]) {
   int currentChar ;
   char *buffer[BUFFER_SIZE];
   strcpy(buffer, sortie);
@@ -55,19 +55,22 @@ int redirigerVersFichier(char *filename, char *mode) {
   return 0;
 }
 
-int redirigerVersFichierEnAjout(char *filename) {
+int redirigerVersFichierEnAjout(int argcSortie, char *argvSortie[]) {
+  char *filename = argvSortie[0];
   redirigerVersFichier(filename, "a");
   return 0;
 }
 
-int redirigerVersFichierEnEcrasant(char *filename) {
+int redirigerVersFichierEnEcrasant(int argcSortie, char *argvSortie[]) {
+  char *filename = argvSortie[0];
   remove(filename);
   redirigerVersFichier(filename, "w");
   return 0;
 }
 
-int lireDepuisFichier(char *filename) {
+int lireDepuisFichier(int argcEntree, char *argvEntree[]) {
   FILE *fichier = NULL;
+  char *filename = argvEntree[0];
   fichier = fopen(filename, "r");
   int currentChar;
   while (!feof(fichier)) {
@@ -78,8 +81,9 @@ int lireDepuisFichier(char *filename) {
   return 0;
 }
 
-int lireDepuisClavier(char *fin) {
+int lireDepuisClavier(int argcEntree, char *argvEntree[]) {
   char *chaine == NULL;
+  char *fin = argvEntree[0];
   do {
     if (chaine != NULL)
       printf("%s", chaine);
@@ -89,22 +93,22 @@ int lireDepuisClavier(char *fin) {
 }
 
 // Interfaces de redirection
-int redirectionCommandeVersCommande(char *entree, char *sortie) {
-  return myPipe(entree, sortie, interpreteur, redirigerVersInterpreteur);
+int redirectionCommandeVersCommande(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]) {
+  return myPipe(argcEntree, argvEntree, argcSortie, argvSortie, interpreteur, redirigerVersInterpreteur);
 }
 
-int redirectionCommandeVersFichierEnAjout(char *entree, char *sortie) {
-  return myPipe(entree, sortie, interpreteur, redirigerVersFichierEnAjout);
+int redirectionCommandeVersFichierEnAjout(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]) {
+  return myPipe(argcEntree, argvEntree, argcSortie, argvSortie, interpreteur, redirigerVersFichierEnAjout);
 }
 
-int redirectionCommandeVersFichierEnEcrasant(char *entree, char *sortie) {
-  return myPipe(entree, sortie, interpreteur, redirigerVersFichierEnEcrasant);
+int redirectionCommandeVersFichierEnEcrasant(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]) {
+  return myPipe(argcEntree, argvEntree, argcSortie, argvSortie, interpreteur, redirigerVersFichierEnEcrasant);
 }
 
-int redirectionFichierVersCommande(char *entree, char *sortie) {
-  return myPipe(entree, sortie, lireDepuisFichier, interpreteur);
+int redirectionFichierVersCommande(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]) {
+  return myPipe(argcEntree, argvEntree, argcSortie, argvSortie, lireDepuisFichier, interpreteur);
 }
 
-int redirectionClavierVersCommande(char *entree, char *sortie) {
-  return myPipe(entree, sortie, lireDepuisClavier, interpreteur);
+int redirectionClavierVersCommande(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]) {
+  return myPipe(argcEntree, argvEntree, argcSortie, argvSortie, lireDepuisClavier, interpreteur);
 }
