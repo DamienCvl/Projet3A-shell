@@ -14,19 +14,11 @@
 int main(int argc, char **argv) {
     char *cmd;
     char **args;
-    char **parsedInput;
+    char **parsedInput = malloc(MAX_ARGS);
     do {
-        printf("directory\n");
         directory();
-        printf("readInput\n");
         char *input = readInput();
-        printf("parseINput\n");
         int nombreArgument = parseInput(parsedInput, input);
-        printf("%d\n", nombreArgument);
-        printf("\n%s\n", parsedInput[0]);
-        printf("%s\n", parsedInput[1] );
-
-        printf("interpret\n");
         interpret(nombreArgument, parsedInput);
     } while (1);
     return 0;
@@ -70,7 +62,6 @@ int parseInput(char *parsed[], char *input) {
   int indexCurrentCommande = 0, nombreArgument = 0, indexDansInput = 0;
   char currentChar = input[indexDansInput];
 
-  parsed = malloc(MAX_ARGS);
   parsed[0] = malloc(sizeof(char) * MAX_SIZE_ARG);
 
   while (currentChar != '\n' || nombreArgument > MAX_ARGS) {
