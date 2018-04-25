@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <dlfcn.h>
+#include <sys/wait.h>
 #include "call.h"
 #include "../cmd/cmd.h"
 
@@ -12,14 +13,21 @@ int call(int argc, char *argv[]) {
   char path[80];
   strcpy(path, "cmd/bin/");
   strcat(path, cmd_name);
-  exit_value = execv(path, argv);
-  if(exit_value==-1) return 0;
-  return 1;
+  pid_t cpid;
+  int status;
+
+  cpid = fork();
+  if (cpid == 0) {
+    return execv(path, argv);
+  }
+
+  waitpid(cpid, &status, 0);
+  return status;
 #elif INTEGRATED_FUNCTION
   cmd_t cmd = getCmd(cmd_name);
   if (cmd)
-    cmd(argc - 1, argv + 1); //Ne retourne pas de valeur de reussite
-//TODO else si commande introuvable
+    return cmd(argc - 1, argv + 1);
+  return -1;
 #elif LIBRARY
   char path[80];
   strcpy(path, "cmd/lib/lib");
