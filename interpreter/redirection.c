@@ -22,11 +22,12 @@ int myPipe(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[
 
    if (pid_fils == 0) {
      close(fd[0]);
+     dup2(fd[1],STDOUT_FILENO);
      (*fctEntree)(argcEntree, argvEntree);
    } else {
      close(fd[1]);
+     dup2(fd[0],STDIN_FILENO);
      (*fctSortie)(argcSortie, argvSortie);
-     wait(NULL);
    }
    return 0;
 }
@@ -35,16 +36,18 @@ int redirigerVersInterpreteur(int argcSortie, char *argvSortie[]) {
   char currentChar;
   char *buffer = malloc(sizeof(char) * BUFFER_SIZE);
   strcpy(buffer, "");
-  while (!feof(stdin)) {
+  while ((currentChar!='\n') && (currentChar!=EOF)) {
     currentChar = fgetc(stdin);
     strcat(buffer, &currentChar);
   }
-  char *argv[argcSortie];
+  char **argv = malloc(argcSortie + 1);
   for (int i = 0; i < argcSortie; i++) {
     argv[i] = argvSortie[i];
   }
   argv[argcSortie] = buffer;
   interpret(argcSortie + 1, argv);
+  free(buffer);
+  free(argv);
   return 0;
 }
 
@@ -52,7 +55,7 @@ int redirigerVersFichier(char *filename, char *mode) {
   FILE *fichier = NULL;
   fichier = fopen(filename, mode);
   int currentChar;
-  while (!feof(stdin)) {
+  while ((currentChar!='\n') && (currentChar!=EOF)) {
     currentChar = fgetc(stdin);
     fputc(currentChar, fichier);
   }

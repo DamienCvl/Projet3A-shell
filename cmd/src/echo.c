@@ -6,10 +6,10 @@ MAIN(echo)
 
 int echo(int argc, char *argv[]) {
   if (argc >= 1) {
-	for (int i = 0; i < argc; i++) {
-		printf("%s ", argv[i]);
-	}
-	printf("\n");
+  	for (int i = 0; i < argc; i++) {
+  		printf("%s ", argv[i]);
+  	}
+  	printf("\n");
   }
   else {
     printf("\n");
