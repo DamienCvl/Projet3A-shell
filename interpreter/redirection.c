@@ -32,25 +32,6 @@ int myPipe(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[
    return 0;
 }
 
-int redirigerVersInterpreteur(int argcSortie, char *argvSortie[]) {
-  char currentChar;
-  char *buffer = malloc(sizeof(char) * BUFFER_SIZE);
-  strcpy(buffer, "");
-  while ((currentChar!='\n') && (currentChar!=EOF)) {
-    currentChar = fgetc(stdin);
-    strcat(buffer, &currentChar);
-  }
-  char **argv = malloc(argcSortie + 1);
-  for (int i = 0; i < argcSortie; i++) {
-    argv[i] = argvSortie[i];
-  }
-  argv[argcSortie] = buffer;
-  interpret(argcSortie + 1, argv);
-  free(buffer);
-  free(argv);
-  return 0;
-}
-
 int redirigerVersFichier(char *filename, char *mode) {
   FILE *fichier = NULL;
   fichier = fopen(filename, mode);
@@ -102,7 +83,7 @@ int lireDepuisClavier(int argcEntree, char *argvEntree[]) {
 
 // Interfaces de redirection
 int redirectionCommandeVersCommande(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]) {
-  return myPipe(argcEntree, argvEntree, argcSortie, argvSortie, interpret, redirigerVersInterpreteur);
+  return myPipe(argcEntree, argvEntree, argcSortie, argvSortie, interpret, interpret);
 }
 
 int redirectionCommandeVersFichierEnAjout(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[]) {
