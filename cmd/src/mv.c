@@ -5,9 +5,9 @@
 #include "../include/mv.h"
 #include "../utils/macro_main.h"
 
-MAIN(cp)
+MAIN(mv)
 
-int cp(int argc, char *argv[]) {
+int mv(int argc, char *argv[]) {
   if (argc != 2) {
     perror("Bad use");
     return -1;
@@ -33,7 +33,7 @@ int cp(int argc, char *argv[]) {
   }
 
   fclose(Fsource);
-  remove(Fsource);
+  remove(argv[0]);
   fclose(Fdestination);
   return 0;
 }
