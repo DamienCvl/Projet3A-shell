@@ -12,6 +12,9 @@
 #define MAX_ARGS 25
 #define BUFFER_SIZE 1024
 
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 int main(int argc, char **argv) {
     char **parsedInput;
     pid_t cpid;
@@ -71,7 +74,7 @@ int interpret(int argc, char *argv[]){
 void displayPromptAndDirectory() {
     char dir[1024];
     getcwd(dir, sizeof(dir));
-    printf("%s$ ", dir);
+    printf(ANSI_COLOR_GREEN "%s$ " ANSI_COLOR_RESET, dir);
 }
 
 char *readInput() {
