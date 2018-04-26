@@ -13,6 +13,7 @@
 #define BUFFER_SIZE 1024
 
 #define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 int main(int argc, char **argv) {
@@ -109,11 +110,11 @@ int parseInput(char *parsed[], char *input) {
 }
 
 int onBording() {
-  printf("\n=============================================\n=   Bienvenue sur le Mini-Shell créé par    =\n=\t\tJohan Sorette               =\n=\t\tDamien Chevalerias          =\n=\t\tBastien Chupin              =\n=\t\tYves Le Palud               =\n=============================================\n\n");
+  printf(ANSI_COLOR_CYAN "\n=============================================\n=   Bienvenue sur le Mini-Shell créé par    =\n=\t\tJohan Sorette               =\n=\t\tDamien Chevalerias          =\n=\t\tBastien Chupin              =\n=\t\tYves Le Palud               =\n=============================================\n\n");
 	return 0;
 }
 
 int out() {
 
-  printf("\nMerci d'avoir utilisé notre Mini-Shell\n\n");
+  printf(ANSI_COLOR_CYAN "\nMerci d'avoir utilisé notre Mini-Shell\n\n");
 }
