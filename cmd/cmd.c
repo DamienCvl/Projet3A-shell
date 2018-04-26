@@ -14,9 +14,9 @@
 #include "include/mv.h"
 #include "include/makedir.h"
 
-int NB_CMD = 7;
-cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm, ls, chmod, cp, mv};
-char *CMD_NAMES[] = {"echo", "pwd", "cat", "cd", "rm", "ls", "chmod", "cp", "mv"};
+int NB_CMD = 10;
+cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm, ls, chmod, cp, mv, makedir};
+char *CMD_NAMES[] = {"echo", "pwd", "cat", "cd", "rm", "ls", "chmod", "cp", "mv", "makedir"};
 
 cmd_t getCmd(char *name) {
   for (int i = 0; i < NB_CMD; i++) {
