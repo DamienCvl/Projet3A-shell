@@ -15,21 +15,27 @@
 int main(int argc, char **argv) {
     char **parsedInput;
     pid_t cpid;
-    int status;
+    int status, loop = 1;
     do {
         displayPromptAndDirectory();
         char *input = readInput();
         parsedInput = malloc(MAX_ARGS);
         int nombreArgument = parseInput(parsedInput, input);
 
-        cpid = fork();
-        if (cpid == 0) {
-          interpret(nombreArgument, parsedInput);
-          return 0;
-        }
+        if (strcmp(parsedInput[0], "exit") == 0) {
+          loop = 0;
+        } else {
 
-        waitpid(cpid, &status, 0);
-    } while (1);
+          cpid = fork();
+          if (cpid == 0) {
+            interpret(nombreArgument, parsedInput);
+            return 0;
+          }
+
+          waitpid(cpid, &status, 0);
+        }
+    } while (loop);
+    printf("See you later!\n");
     return 0;
 }
 
