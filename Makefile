@@ -1,5 +1,5 @@
 CC=gcc
-COMMANDS= echo pwd cd rm ls cat
+COMMANDS= echo pwd cd rm ls cat cp
 PATH_BIN=cmd/bin/
 PATH_LIB=cmd/lib/
 PATH_COMMAND_SRC=cmd/src/
