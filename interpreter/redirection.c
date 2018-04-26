@@ -4,11 +4,9 @@
 #include <sys/types.h>
 #include <string.h>
 #include <sys/wait.h>
-#include "call.h"
 #include "interpreter.h"
 #include "redirection.h"
 
-#define BUFFER_SIZE 1024
 #define WAIT_CHILD 1
 #define DO_NOT_WAIT_CHILD 0
 

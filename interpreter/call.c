@@ -7,6 +7,9 @@
 #include "../cmd/cmd.h"
 
 int call(int argc, char *argv[]) {
+  if (argc == 0) {
+    return -1;
+  }
   char *cmd_name = argv[0];
   int exit_value;
 #ifdef EXECUTABLE
@@ -25,9 +28,13 @@ int call(int argc, char *argv[]) {
   return status;
 #elif INTEGRATED_FUNCTION
   cmd_t cmd = getCmd(cmd_name);
-  if (cmd)
+  if (cmd) {
     return cmd(argc - 1, argv + 1);
-  return -1;
+  }
+  else {
+    printf("%s: command not found\n", cmd_name);
+    return -1;
+  }
 #elif LIBRARY
   char path[80];
   strcpy(path, "cmd/lib/lib");
@@ -37,7 +44,11 @@ int call(int argc, char *argv[]) {
 
   if (handle) {
        cmd_t cmd = dlsym(handle, cmd_name);
-       cmd(argc - 1, argv + 1);
+       return cmd(argc - 1, argv + 1);
+  }
+  else {
+    printf("%s: command not found\n", cmd_name);
+    return -1;
   }
 #endif
 }

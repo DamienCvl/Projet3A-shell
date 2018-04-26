@@ -5,7 +5,8 @@
   void displayPromptAndDirectory();
   int parseInput(char *parsed[], char *input);
   int interpret(int argc, char *argv[]);
-  int onBording();
-  int out();
+  void sayHi();
+  void sayGoodBye();
+  void fork_interpret(int argc, char *argv[]);
 
 #endif

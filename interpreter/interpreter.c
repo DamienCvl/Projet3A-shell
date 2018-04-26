@@ -10,7 +10,6 @@
 
 #define MAX_SIZE_ARG 100
 #define MAX_ARGS 25
-#define BUFFER_SIZE 1024
 
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_CYAN "\x1b[36m"
@@ -18,30 +17,37 @@
 
 int main(int argc, char **argv) {
     char **parsedInput;
-    pid_t cpid;
-    int status, loop = 1;
-    onBording();
+    char *input;
+    int loop = 1;
+
+    sayHi();
     do {
         displayPromptAndDirectory();
-        char *input = readInput();
+        input = readInput();
         parsedInput = malloc(MAX_ARGS);
         int nombreArgument = parseInput(parsedInput, input);
+        free(input);
 
-        if (strcmp(parsedInput[0], "exit") == 0) {
+        if (nombreArgument >= 1 && strcmp(parsedInput[0], "exit") == 0) {
           loop = 0;
-        } else {
-
-          cpid = fork();
-          if (cpid == 0) {
-            interpret(nombreArgument, parsedInput);
-            return 0;
-          }
-
-          waitpid(cpid, &status, 0);
+        }
+        else {
+          fork_interpret(nombreArgument, parsedInput);
         }
     } while (loop);
-    out();
+    sayGoodBye();
     return 0;
+}
+
+void fork_interpret(int argc, char *argv[]) {
+  pid_t cpid;
+  int status;
+
+  if ((cpid = fork()) == 0) {
+    exit(interpret(argc, argv));
+  }
+
+  waitpid(cpid, &status, 0);
 }
 
 int interpret(int argc, char *argv[]){
@@ -73,12 +79,6 @@ int interpret(int argc, char *argv[]){
   return call(argc, argv);
 }
 
-void displayPromptAndDirectory() {
-    char dir[1024];
-    getcwd(dir, sizeof(dir));
-    printf(ANSI_COLOR_GREEN "%s$ " ANSI_COLOR_RESET, dir);
-}
-
 char *readInput() {
     char *line = NULL;
     size_t len = 0;
@@ -87,34 +87,46 @@ char *readInput() {
 }
 
 int parseInput(char *parsed[], char *input) {
-  int indexCurrentCommande = 0, nombreArgument = 0, indexDansInput = 0;
-  char currentChar = input[indexDansInput];
+  int indexCurrentCharArgument = 0, nombreArgument = 0, indexInput = 0;
+  char currentChar = input[indexInput];
 
   while (currentChar != '\n' || nombreArgument > MAX_ARGS) {
-    if (indexCurrentCommande == 0) {
+    if (indexCurrentCharArgument == 0) {
       parsed[nombreArgument] = malloc(sizeof(char) * MAX_SIZE_ARG);
+      nombreArgument++;
     }
 
     if (currentChar == ' ') {
-      parsed[nombreArgument][indexCurrentCommande] = '\0';
-      nombreArgument++;
-      indexCurrentCommande = 0;
-    } else {
-      parsed[nombreArgument][indexCurrentCommande] = currentChar;
-      indexCurrentCommande++;
+      parsed[nombreArgument - 1][indexCurrentCharArgument] = '\0';
+      indexCurrentCharArgument = 0;
     }
-    indexDansInput++;
-    currentChar = input[indexDansInput];
+    else {
+      parsed[nombreArgument - 1][indexCurrentCharArgument] = currentChar;
+      indexCurrentCharArgument++;
+    }
+    indexInput++;
+    currentChar = input[indexInput];
   }
-  return nombreArgument + 1;
+  return nombreArgument;
 }
 
-int onBording() {
-  printf(ANSI_COLOR_CYAN "\n=============================================\n=   Bienvenue sur le Mini-Shell créé par    =\n=\t\tJohan Sorette               =\n=\t\tDamien Chevalerias          =\n=\t\tBastien Chupin              =\n=\t\tYves Le Palud               =\n=============================================\n\n");
-	return 0;
+void displayPromptAndDirectory() {
+    char dir[1024];
+    getcwd(dir, sizeof(dir));
+    printf(ANSI_COLOR_GREEN "%s$ " ANSI_COLOR_RESET, dir);
 }
 
-int out() {
+void sayHi() {
+  printf(ANSI_COLOR_CYAN
+    "\n=============================================\n"
+    "=   Bienvenue sur le Mini-Shell créé par    =\n"
+    "=\t\tJohan Sorette               =\n"
+    "=\t\tDamien Chevalerias          =\n"
+    "=\t\tBastien Chupin              =\n"
+    "=\t\tYves Le Palud               =\n="
+    "============================================\n\n");
+}
 
-  printf(ANSI_COLOR_CYAN "\nMerci d'avoir utilisé notre Mini-Shell\n\n");
+void sayGoodBye() {
+  printf(ANSI_COLOR_CYAN "\nA bientôt !\n\n");
 }
