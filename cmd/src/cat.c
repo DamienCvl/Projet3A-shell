@@ -3,7 +3,6 @@
 #include <errno.h>
 #include <string.h>
 #include "../include/cat.h"
-#include "../utils/argument.h"
 #include "../utils/macro_main.h"
 
 MAIN(cat)

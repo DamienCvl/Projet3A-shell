@@ -11,7 +11,6 @@
 #include <limits.h>
 #include <dirent.h>
 #include "../include/ls.h"
-#include "../utils/argument.h"
 #include "../utils/macro_main.h"
 
 MAIN(ls)
