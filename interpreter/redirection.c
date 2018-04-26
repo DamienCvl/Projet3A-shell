@@ -23,20 +23,18 @@ int myPipe(int argcEntree, char *argvEntree[], int argcSortie, char *argvSortie[
    if (pid_fils == 0) {
      close(fd[0]);
      dup2(fd[1],STDOUT_FILENO);
-     (*fctEntree)(argcEntree, argvEntree);
-   } else {
-     close(fd[1]);
-     dup2(fd[0],STDIN_FILENO);
-     (*fctSortie)(argcSortie, argvSortie);
+     return (*fctEntree)(argcEntree, argvEntree);
    }
-   return 0;
+   close(fd[1]);
+   dup2(fd[0],STDIN_FILENO);
+   return (*fctSortie)(argcSortie, argvSortie);
 }
 
 int redirigerVersFichier(char *filename, char *mode) {
   FILE *fichier = NULL;
   fichier = fopen(filename, mode);
   int currentChar;
-  while ((currentChar!='\n') && (currentChar!=EOF)) {
+  while (!feof(stdin)) {
     currentChar = fgetc(stdin);
     fputc(currentChar, fichier);
   }

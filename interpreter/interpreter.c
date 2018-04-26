@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
     pid_t cpid;
     int status;
     do {
-        directory();
+        displayPromptAndDirectory();
         char *input = readInput();
         parsedInput = malloc(MAX_ARGS);
         int nombreArgument = parseInput(parsedInput, input);
@@ -62,7 +62,7 @@ int interpret(int argc, char *argv[]){
   return call(argc, argv);
 }
 
-void directory() {
+void displayPromptAndDirectory() {
     char dir[1024];
     getcwd(dir, sizeof(dir));
     printf("%s$ ", dir);
