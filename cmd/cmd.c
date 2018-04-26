@@ -12,6 +12,7 @@
 #include "include/chmod.h"
 #include "include/cp.h"
 #include "include/mv.h"
+#include "include/makedir.h"
 
 int NB_CMD = 7;
 cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm, ls, chmod, cp, mv};
