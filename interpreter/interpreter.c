@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
     char **parsedInput;
     pid_t cpid;
     int status, loop = 1;
+    onBording();
     do {
         displayPromptAndDirectory();
         char *input = readInput();
@@ -38,7 +39,7 @@ int main(int argc, char **argv) {
           waitpid(cpid, &status, 0);
         }
     } while (loop);
-    printf("See you later!\n");
+    out();
     return 0;
 }
 
@@ -105,4 +106,14 @@ int parseInput(char *parsed[], char *input) {
     currentChar = input[indexDansInput];
   }
   return nombreArgument + 1;
+}
+
+int onBording() {
+  printf("\n=============================================\n=   Bienvenue sur le Mini-Shell créé par    =\n=\t\tJohan Sorette               =\n=\t\tDamien Chevalerias          =\n=\t\tBastien Chupin              =\n=\t\tYves Le Palud               =\n=============================================\n\n");
+	return 0;
+}
+
+int out() {
+
+  printf("\nMerci d'avoir utilisé notre Mini-Shell\n\n");
 }
