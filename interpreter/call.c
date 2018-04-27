@@ -20,13 +20,14 @@ int call(int argc, char *argv[]) {
     int status;
     cpid = fork();
     if (cpid == 0) {
+        // Appel de l'executable correspondant dans un processus fils avec tous les arguments
         return execv(path, argv);
     }
-
-    waitpid(cpid, &status, 0);
+    waitpid(cpid, &status, 0); // Attente de la fin d'execution de la commande
     return status;
+
     #elif INTEGRATED_FUNCTION
-    cmd_t cmd = getCmd(cmd_name);
+    cmd_t cmd = getCmd(cmd_name); // Récupération de la fonction correspondante au nom donné
     if (cmd) {
         return cmd(argc - 1, argv + 1);
     }
@@ -40,9 +41,9 @@ int call(int argc, char *argv[]) {
     strcpy(path, "cmd/lib/lib");
     strcat(path, cmd_name);
     strcat(path, ".so");
-    void *handle = dlopen(path, RTLD_NOW);
+    void *handle = dlopen(path, RTLD_NOW); // Ouverture de la librairie correspondante au nom donné
     if (handle) {
-        cmd_t cmd = dlsym(handle, cmd_name);
+        cmd_t cmd = dlsym(handle, cmd_name); // Récupération de la fonction de commande dans la librairie
         return cmd(argc - 1, argv + 1);
     }
     else {
