@@ -13,26 +13,26 @@ int cp(int argc, char *argv[]) {
     return -1;
   }
 
-  FILE* Fsource = NULL;
-  FILE* Fdestination = NULL;
+  FILE* fileSource = NULL;
+  FILE* fileDestination = NULL;
   int currentChar;
 
 
-  if ((Fsource = fopen(argv[0], "r")) == NULL) {
+  if ((fileSource = fopen(argv[0], "r")) == NULL) {
     printf("%s, %s\n", argv[0], strerror(errno));
     return -1;
   }
 
-  if ((Fdestination = fopen(argv[1], "w+")) == NULL) {
+  if ((fileDestination = fopen(argv[1], "w+")) == NULL) {
     printf("%s, %s\n", argv[1], strerror(errno));
     return -1;
   }
 
-  while ((currentChar = fgetc(Fsource)) != EOF) {
-    fputc(currentChar, Fdestination);
+  while ((currentChar = fgetc(fileSource)) != EOF) {
+    fputc(currentChar, fileDestination);
   }
 
-  fclose(Fsource);
-  fclose(Fdestination);
+  fclose(fileSource);
+  fclose(fileDestination);
   return 0;
 }
