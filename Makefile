@@ -35,6 +35,8 @@ as_library: command_libraries
 	@$(CC) -o asLibrary $(PATH_INTERPRETER)*.c -D LIBRARY -ldl
 
 clean:
-	@/bin/rm -f *.o
+	@rm -fr cmd/lib
+	@rm -fr cmd/bin
+	@rm -f as*
 
 re: clean all
