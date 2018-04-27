@@ -56,23 +56,35 @@ int interpret(int argc, char *argv[]){
             return !interpret(i, argv) && interpret(argc - i - 1, argv + i + 1);
         }
     }
-    for (int i = argc - 1; i > 0; i--) {
-        if (strcmp("|", argv[i]) == 0) {
-            return redirectionCommandeVersCommande(i, argv, argc - i - 1, argv + i + 1);
+
+    int (*redirection)(int, char**, int, char **) = NULL;
+    int position;
+    for (position = argc - 1; position > 0; position--) {
+        if (strcmp("|", argv[position]) == 0) {
+            redirection = redirectionCommandeVersCommande;
+            break;
         }
-        else if (strcmp(">", argv[i]) == 0) {
-            return redirectionCommandeVersFichierEnEcrasant(i, argv, argc - i - 1, argv + i + 1);
+        else if (strcmp(">", argv[position]) == 0) {
+            redirection = redirectionCommandeVersFichierEnEcrasant;
+            break;
         }
-        else if (strcmp(">>", argv[i]) == 0) {
-            return redirectionCommandeVersFichierEnAjout(i, argv, argc - i - 1, argv + i + 1);
+        else if (strcmp(">>", argv[position]) == 0) {
+            redirection = redirectionCommandeVersFichierEnAjout;
+            break;
         }
-        else if (strcmp("<", argv[i]) == 0) {
-            return redirectionFichierVersCommande(i, argv, argc - i - 1, argv + i + 1);
+        else if (strcmp("<", argv[position]) == 0) {
+            redirection = redirectionFichierVersCommande;
+            break;
         }
-        else if (strcmp("<<", argv[i]) == 0) {
-            return redirectionClavierVersCommande(i, argv, argc - i - 1, argv + i + 1);
+        else if (strcmp("<<", argv[position]) == 0) {
+            redirection = redirectionClavierVersCommande;
+            break;
         }
     }
+    if (redirection != NULL) {
+        return redirection(position, argv, argc - position - 1, argv + position + 1);
+    }
+
     return call(argc, argv);
 }
 
