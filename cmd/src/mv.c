@@ -8,7 +8,8 @@
 MAIN(mv)
 
 int mv(int argc, char *argv[]) {
-    if (argc < 2) {
+  /*Fonctionnn de la même facçon que le cp*/
+  if (argc < 2) {
         perror("mv: missing file operand");
         return -1;
     }
@@ -31,6 +32,7 @@ int mv(int argc, char *argv[]) {
         fputc(currentChar, fileDestination);
     }
 
+    //On efface le fichier source
     fclose(fileSource);
     remove(argv[0]);
     fclose(fileDestination);
