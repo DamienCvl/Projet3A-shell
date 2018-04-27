@@ -8,8 +8,8 @@
 MAIN(cp)
 
 int cp(int argc, char *argv[]) {
-    if (argc != 2) {
-        perror("Bad use");
+    if (argc < 2) {
+        perror("cp: missing file operand");
         return -1;
     }
 

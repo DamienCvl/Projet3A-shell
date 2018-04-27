@@ -10,9 +10,15 @@
 MAIN(makedir)
 
 int makedir(int argc, char *argv[]) {
-    if (mkdir(argv[0], 0777) == -1) {
-        printf("%s, %s\n", argv[0], strerror(errno));
-        return 1;
+    if (argc < 1) {
+        perror("makedir: missing operand");
+        return -1;
+    }
+
+    char *filename = argv[0];
+    if (mkdir(filename, 0777) != 0) {
+        printf("makedir: %s: %s\n", filename, strerror(errno));
+        return -1;
     }
     return 0;
 }

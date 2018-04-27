@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 #include <stdlib.h>
 #include "../include/cd.h"
 #include "../utils/macro_main.h"
@@ -17,7 +19,8 @@ int cd(int argc, char *argv[]) {
     }
 
     if (chdir(path) != 0) {
-        printf("cd: %s:No such file or directory\n", path);
+        printf("cd: %s: %s\n", path, strerror(errno));
+        return -1;
     }
     return 0;
 }

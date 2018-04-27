@@ -17,7 +17,7 @@ int cat(int argc, char *argv[]) {
 
         if (!file) {
             printf("cat: %s: %s\n", filename, strerror(errno));
-            return(-1);
+            return -1;
         }
     }
     else {
@@ -30,9 +30,10 @@ int cat(int argc, char *argv[]) {
     while ((read = getline(&line, &len, file)) != -1) {
         printf("%s", line);
     }
-    if (line)
-    free(line);
+    if (line) {
+        free(line);
+    }
 
     fclose(file);
-    return(0);
+    return 0;
 }
