@@ -8,31 +8,31 @@
 MAIN(cat)
 
 int cat(int argc, char *argv[]) {
-  FILE *file;
-  char c;
-  if (argc >= 1) {
-    char *filename = argv[0];
+    FILE *file;
+    char c;
+    if (argc >= 1) {
+        char *filename = argv[0];
 
-    file = fopen(filename,"r");
+        file = fopen(filename,"r");
 
-    if (!file) {
-        printf("cat: %s: %s\n", filename, strerror(errno));
-        return(-1);
+        if (!file) {
+            printf("cat: %s: %s\n", filename, strerror(errno));
+            return(-1);
+        }
     }
-  }
-  else {
-    file = stdin;
-  }
+    else {
+        file = stdin;
+    }
 
-  char *line = NULL;
-  size_t len = 0;
-  ssize_t read;
-  while ((read = getline(&line, &len, file)) != -1) {
-    printf("%s", line);
-  }
-  if (line)
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    while ((read = getline(&line, &len, file)) != -1) {
+        printf("%s", line);
+    }
+    if (line)
     free(line);
 
-  fclose(file);
-  return(0);
+    fclose(file);
+    return(0);
 }

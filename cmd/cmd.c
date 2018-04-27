@@ -19,12 +19,12 @@ cmd_t CMD_FUNCTIONS[] = {echo, pwd, cat, cd, rm, ls, chmod, cp, mv, makedir};
 char *CMD_NAMES[] = {"echo", "pwd", "cat", "cd", "rm", "ls", "chmod", "cp", "mv", "makedir"};
 
 cmd_t getCmd(char *name) {
-  for (int i = 0; i < NB_CMD; i++) {
-    if (strcmp(name, CMD_NAMES[i]) == 0) {
-      return CMD_FUNCTIONS[i];
+    for (int i = 0; i < NB_CMD; i++) {
+        if (strcmp(name, CMD_NAMES[i]) == 0) {
+            return CMD_FUNCTIONS[i];
+        }
     }
-  }
-  return NULL;
+    return NULL;
 }
 
 #endif

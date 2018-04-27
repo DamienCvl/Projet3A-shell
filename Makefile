@@ -3,7 +3,6 @@ COMMANDS= echo pwd cd rm ls cat cp mv makedir
 PATH_BIN=cmd/bin/
 PATH_LIB=cmd/lib/
 PATH_COMMAND_SRC=cmd/src/
-PATH_COMMAND_UTILS=cmd/utils/
 PATH_COMMAND=cmd/
 PATH_INTERPRETER=interpreter/
 
