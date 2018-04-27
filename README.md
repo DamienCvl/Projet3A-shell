@@ -1,9 +1,9 @@
 # Projet Mini-Shell
 
 ## Présentation
-Ce projet a pour objectif de recréer un Shell (quelques fonctionnalités de base) et  le langage C.
+Ce projet a pour objectif de recréer un Shell (quelques fonctionnalités de base) et de se familiariser avec le langage C.
 
-La contrainte de pouvoir utiliser les commandes du Mini-Shell sous 3 formes, nous a été imposée :
+Nous avions la contrainte de permettre d'utiliser les commandes du Mini-Shell sous 3 formes :
 - Exécutables indépendants
 - Intégrées à l'exécutable de l'interpreteur de commande
 - Librairies
@@ -17,6 +17,8 @@ Il est possible de générer seulement les parties souhaitées :
 - `make as_integrated_function` génère l'interpreteur de commande avec les fonctions de commandes intégrées
 - `make as_library` génère les librairies (fichiers ".so"), ainsi que l'exécutable de l'interpreteur correspondant
 
+
+### Exécution
 Pour executer le Mini-Shell dans l'un des trois, il suffit de taper la commande suivante dans le terminal :
 
 > Lorsque l'on est placé à la racine du projet
