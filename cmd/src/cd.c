@@ -12,6 +12,8 @@ int cd(int argc, char *argv[]) {
     char *path;
 
     if (argc == 0 || argv[0][0] == '~') {
+        // Si rien ou le caractère ~ est renseigné:
+        // on se déplace vers le répertoire HOME de l'utilisateur
         path = getenv("HOME");
     }
     else {

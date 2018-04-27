@@ -9,8 +9,8 @@ MAIN(cat)
 
 int cat(int argc, char *argv[]) {
     FILE *file;
-    char c;
     if (argc >= 1) {
+        // Lecture à partir du fichier passé en paramètre
         char *filename = argv[0];
 
         file = fopen(filename,"r");
@@ -21,6 +21,7 @@ int cat(int argc, char *argv[]) {
         }
     }
     else {
+        // Si nom de fichier non renseigné : lecture depuis l'entrée standard
         file = stdin;
     }
 

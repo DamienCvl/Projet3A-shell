@@ -7,6 +7,7 @@ MAIN(pwd)
 
 int pwd(int argc, char *argv[]) {
   char cwd[1024];
+  // Récupération du répertoire de travail courant grâce à l'appel system getcwd
   if (getcwd(cwd, sizeof(cwd)) == NULL) {
       return -1;
   }
