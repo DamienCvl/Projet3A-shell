@@ -1,14 +1,15 @@
 GROUPE : Yves LE PALUD, Damien CHEVALERIAS, Bastien CHUPIN, Johan SORETTE
 
-Pour tester l'interface, il faut d'abord tout générer avec make.
+Pour tester l'interface, il faut d'abord tout générer avec make. Cela va créer
+les trois formes d'executions. On peut spécifier un mode particulier à la compilation:
+qui sont: as_executable as_integrated_function as_library. Il suffit de taper make pour
+compiler le Mini-Shell avec les trois modes d'éxécution.
+Pour effacer les binaires créer faire un make clean.
 
-Comment executer les 2 commandes (echo et pwd) selon les 3 formes :
+Pour executer le mini-shell choisir un mode d'execution en executer l'un des trois modes:
 
-./asExecutable pwd
-./asExecutable echo "Chaine à afficher"
+./asExecutable
+./asIntegratedFunction
+./asLibrary
 
-./asIntegratedFunction pwd
-./asIntegratedFunction echo "Chaine à afficher"
-
-./asLibrary pwd
-./asLibrary echo "Chaine à afficher"
+Pour quitter le Mini-Shell il faut taper "exit"
